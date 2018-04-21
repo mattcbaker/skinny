@@ -1,8 +1,15 @@
-﻿using System;
-
-namespace lib
+﻿namespace Skinny
 {
-    public class Class1
+    public class Connection
     {
+        public Connection(string connectionString)
+        {
+            
+        }
+
+        public int Command(string command)
+        {
+            return -1;
+        }
     }
 }
