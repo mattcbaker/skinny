@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 // Ref https://xunit.github.io/docs/running-tests-in-parallel
@@ -45,12 +44,12 @@ namespace Skinny
     }
 
     [Fact]
-    public void should_return_negative_one() => Assert.Equal(1, actual);
+    public void should_return_one() => Assert.Equal(1, actual);
 
     static int actual;
   }
 
-    public class when_executing_a_query_that_returns_a_single_row
+  public class when_executing_a_query_that_returns_a_single_row
   {
     public when_executing_a_query_that_returns_a_single_row()
     {
@@ -69,16 +68,17 @@ namespace Skinny
 
       var query = "SELECT * FROM skinny_testing";
 
-      var actual = connection.Query<SkinnyTestingDatabaseRecord>(query);
+      actual = connection.Query<SkinnyTestingDatabaseRecord>(query);
     }
 
     [Fact]
-    public void should_return_negative_one() => Assert.Equal(1, actual);
+    public void should_return_mapped_database_record() => Assert.Equal("some testing", actual.title);
 
-    static int actual;
+    static SkinnyTestingDatabaseRecord actual;
 
-    class SkinnyTestingDatabaseRecord{
-      public string Title;
+    class SkinnyTestingDatabaseRecord
+    {
+      public string title;
     }
   }
 }

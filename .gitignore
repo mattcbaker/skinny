@@ -2,3 +2,5 @@ obj/
 bin/
 .env
 .vs/
+*.sln
+*.ncrunchsolution.user
