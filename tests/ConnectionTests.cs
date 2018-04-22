@@ -49,4 +49,36 @@ namespace Skinny
 
     static int actual;
   }
+
+    public class when_executing_a_query_that_returns_a_single_row
+  {
+    public when_executing_a_query_that_returns_a_single_row()
+    {
+      var connection = new Connection(Settings.ConnectionString);
+
+      var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
+      connection.Command(dropTableCommand);
+
+      var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
+
+      connection.Command(createTableCommand);
+
+      var insertCommand = "INSERT INTO skinny_testing (title) VALUES ('some testing')";
+
+      connection.Command(insertCommand);
+
+      var query = "SELECT * FROM skinny_testing";
+
+      var actual = connection.Query<SkinnyTestingDatabaseRecord>(query);
+    }
+
+    [Fact]
+    public void should_return_negative_one() => Assert.Equal(1, actual);
+
+    static int actual;
+
+    class SkinnyTestingDatabaseRecord{
+      public string Title;
+    }
+  }
 }
