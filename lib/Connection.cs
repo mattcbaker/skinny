@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Npgsql;
 
 namespace Skinny
@@ -22,7 +23,7 @@ namespace Skinny
       return postgresCommand.ExecuteNonQuery();
     }
 
-    public T Query<T>(string query)
+    public T[] Query<T>(string query)
     {
       var postgresConnection = OpenPostgresConnection();
 
@@ -34,19 +35,26 @@ namespace Skinny
       return MapQueryResultToType<T>(queryResults);
     }
 
-    T MapQueryResultToType<T>(NpgsqlDataReader reader)
+    T[] MapQueryResultToType<T>(NpgsqlDataReader reader)
     {
-      var mapped = Activator.CreateInstance<T>();
+      var result = new List<T>();
 
-      var column = reader.GetColumnSchema()[0];
+      if(!reader.HasRows) return result.ToArray();
 
-      var field = mapped.GetType().GetField(column.ColumnName);
+      while (reader.Read())
+      {
+        var mapped = Activator.CreateInstance<T>();
 
-      reader.Read();
+        var column = reader.GetColumnSchema()[0];
 
-      field.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));
+        var field = mapped.GetType().GetField(column.ColumnName);
 
-      return mapped;
+        field.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));
+
+        result.Add(mapped);
+      }
+
+      return result.ToArray();
     }
 
     NpgsqlConnection OpenPostgresConnection()
