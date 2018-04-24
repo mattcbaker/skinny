@@ -39,22 +39,35 @@ namespace Skinny
     {
       var result = new List<T>();
 
-      if(!reader.HasRows) return result.ToArray();
+      if (!reader.HasRows) return result.ToArray();
 
       while (reader.Read())
       {
+        var column = reader.GetColumnSchema()[0];
         var mapped = Activator.CreateInstance<T>();
 
-        var column = reader.GetColumnSchema()[0];
-
-        var field = mapped.GetType().GetField(column.ColumnName);
-
-        field.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));
+        if (TypeHasFieldWithThisName<T>(column.ColumnName))
+        {
+          var field = mapped.GetType().GetField(column.ColumnName);
+          field.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));
+        }
+        else
+        {
+          var property = mapped.GetType().GetProperty(column.ColumnName);
+          property.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));          
+        }
 
         result.Add(mapped);
       }
 
       return result.ToArray();
+    }
+
+    bool TypeHasFieldWithThisName<T>(string fieldName)
+    {
+      var instance = Activator.CreateInstance<T>();
+
+      return instance.GetType().GetField(fieldName) != null;
     }
 
     NpgsqlConnection OpenPostgresConnection()
