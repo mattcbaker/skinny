@@ -3,45 +3,9 @@ using System.Linq;
 
 namespace Skinny
 {
-  public class when_mapping_single_result_to_field
+  public class when_mapping_results_to_field
   {
-    public when_mapping_single_result_to_field()
-    {
-      var connection = new Connection(Settings.ConnectionString);
-
-      var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand);
-
-      var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
-
-      connection.Command(createTableCommand);
-
-      var insertCommand = "INSERT INTO skinny_testing (title) VALUES ('some testing')";
-
-      connection.Command(insertCommand);
-
-      var query = "SELECT * FROM skinny_testing";
-
-      actual = connection.Query<SkinnyTestingDatabaseRecord>(query);
-    }
-
-    [Fact]
-    public void should_return_a_single_record() => Assert.Equal(1, actual.Length);
-
-    [Fact]
-    public void should_map_record() => Assert.Equal("some testing", actual[0].title);
-
-    static SkinnyTestingDatabaseRecord[] actual;
-
-    class SkinnyTestingDatabaseRecord
-    {
-      public string title;
-    }
-  }
-
-  public class when_mapping_multiple_results_to_field
-  {
-    public when_mapping_multiple_results_to_field()
+    public when_mapping_results_to_field()
     {
       var connection = new Connection(Settings.ConnectionString);
 
@@ -75,45 +39,9 @@ namespace Skinny
     }
   }
 
-  public class when_mapping_single_result_to_property
+  public class when_mapping_results_to_property
   {
-    public when_mapping_single_result_to_property()
-    {
-      var connection = new Connection(Settings.ConnectionString);
-
-      var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand);
-
-      var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
-
-      connection.Command(createTableCommand);
-
-      var insertCommand = "INSERT INTO skinny_testing (title) VALUES ('some testing')";
-
-      connection.Command(insertCommand);
-
-      var query = "SELECT * FROM skinny_testing";
-
-      actual = connection.Query<SkinnyTestingDatabaseRecord>(query);
-    }
-
-    [Fact]
-    public void should_return_a_single_record() => Assert.Equal(1, actual.Length);
-
-    [Fact]
-    public void should_map_record() => Assert.Equal("some testing", actual[0].title);
-
-    static SkinnyTestingDatabaseRecord[] actual;
-
-    class SkinnyTestingDatabaseRecord
-    {
-      public string title { get; set; }
-    }
-  }
-
-  public class when_mapping_multiple_results_to_property
-  {
-    public when_mapping_multiple_results_to_property()
+    public when_mapping_results_to_property()
     {
       var connection = new Connection(Settings.ConnectionString);
 
