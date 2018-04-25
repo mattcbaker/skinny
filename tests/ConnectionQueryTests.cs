@@ -8,20 +8,15 @@ namespace Skinny
   {
     public when_mapping_results_to_field()
     {
+
+      TestingUtils.PostgresCommand("DROP TABLE IF EXISTS skinny_testing");
+      TestingUtils.PostgresCommand("CREATE TABLE skinny_testing (title varchar(100))");
+      TestingUtils.PostgresCommand("INSERT INTO skinny_testing (title) VALUES ('some testing')");
+      TestingUtils.PostgresCommand("INSERT INTO skinny_testing (title) VALUES ('other testing')");
+
       var connection = new Connection(Settings.ConnectionString);
 
-      var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand, new Dictionary<string, object>());
-
-      var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
-
-      connection.Command(createTableCommand, new Dictionary<string, object>());
-
-      connection.Command("INSERT INTO skinny_testing (title) VALUES ('some testing')", new Dictionary<string, object>());
-      connection.Command("INSERT INTO skinny_testing (title) VALUES ('other testing')", new Dictionary<string, object>());
-
       var query = "SELECT * FROM skinny_testing";
-
       actual = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, object>());
     }
 
@@ -46,20 +41,14 @@ namespace Skinny
   {
     public when_mapping_results_to_property()
     {
+      TestingUtils.PostgresCommand("DROP TABLE IF EXISTS skinny_testing");
+      TestingUtils.PostgresCommand("CREATE TABLE skinny_testing (title varchar(100))");
+      TestingUtils.PostgresCommand("INSERT INTO skinny_testing (title) VALUES ('some testing')");
+      TestingUtils.PostgresCommand("INSERT INTO skinny_testing (title) VALUES ('other testing')");
+
       var connection = new Connection(Settings.ConnectionString);
 
-      var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand, new Dictionary<string, object>());
-
-      var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
-
-      connection.Command(createTableCommand, new Dictionary<string, object>());
-
-      connection.Command("INSERT INTO skinny_testing (title) VALUES ('some testing')", new Dictionary<string, object>());
-      connection.Command("INSERT INTO skinny_testing (title) VALUES ('other testing')", new Dictionary<string, object>());
-
       var query = "SELECT * FROM skinny_testing";
-
       actual = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, object>());
     }
 
@@ -81,20 +70,14 @@ namespace Skinny
   {
     public when_mapping_multiple_columns()
     {
+      TestingUtils.PostgresCommand("DROP TABLE IF EXISTS skinny_testing");
+      TestingUtils.PostgresCommand("CREATE TABLE skinny_testing (title varchar(100), description varchar(100))");
+      TestingUtils.PostgresCommand("INSERT INTO skinny_testing (title, description) VALUES ('some testing', 'some description')");
+      TestingUtils.PostgresCommand("INSERT INTO skinny_testing (title, description) VALUES ('other testing', 'another description')");
+
       var connection = new Connection(Settings.ConnectionString);
 
-      var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand, new Dictionary<string, object>());
-
-      var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100), description varchar(100))";
-
-      connection.Command(createTableCommand, new Dictionary<string, object>());
-
-      connection.Command("INSERT INTO skinny_testing (title, description) VALUES ('some testing', 'some description')", new Dictionary<string, object>());
-      connection.Command("INSERT INTO skinny_testing (title, description) VALUES ('other testing', 'another description')", new Dictionary<string, object>());
-
       var query = "SELECT * FROM skinny_testing";
-
       actual = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, object>());
     }
 
@@ -123,16 +106,12 @@ namespace Skinny
   {
     public when_querying_with_parameters()
     {
+
+      TestingUtils.PostgresCommand("DROP TABLE IF EXISTS skinny_testing");
+      TestingUtils.PostgresCommand("CREATE TABLE skinny_testing (title varchar(100))");
+      TestingUtils.PostgresCommand("INSERT INTO skinny_testing (title) VALUES ('some testing')");
+
       var connection = new Connection(Settings.ConnectionString);
-
-      var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand, new Dictionary<string, object>());
-
-      var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
-
-      connection.Command(createTableCommand, new Dictionary<string, object>());
-
-      connection.Command("INSERT INTO skinny_testing (title) VALUES ('some testing')", new Dictionary<string, object>());
 
       var query = "SELECT * FROM skinny_testing where title = @title";
 
@@ -140,7 +119,6 @@ namespace Skinny
 
       actual = connection.Query<SkinnyTestingDatabaseRecord>(query, parameters);
     }
-
 
     [Fact]
     public void should_map_first_record() => Assert.Contains(actual, x => x.title == "some testing");
