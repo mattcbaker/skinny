@@ -79,7 +79,7 @@ namespace Skinny
 
     class SkinnyCommandTesting
     {
-      public string title;
+      public string title = string.Empty;
     }
   }
 }

@@ -38,7 +38,7 @@ namespace Skinny
 
     class SkinnyTestingDatabaseRecord
     {
-      public string title;
+      public string title = string.Empty;
     }
   }
 
@@ -149,7 +149,7 @@ namespace Skinny
 
     class SkinnyTestingDatabaseRecord
     {
-      public string title;
+      public string title = string.Empty;
     }
   }
 }
