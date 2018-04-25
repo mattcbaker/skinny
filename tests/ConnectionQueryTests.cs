@@ -1,5 +1,6 @@
 using Xunit;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Skinny
 {
@@ -21,7 +22,7 @@ namespace Skinny
 
       var query = "SELECT * FROM skinny_testing";
 
-      actual = connection.Query<SkinnyTestingDatabaseRecord>(query);
+      actual = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, string>());
     }
 
     [Fact]
@@ -29,6 +30,8 @@ namespace Skinny
 
     [Fact]
     public void should_map_first_record() => Assert.True(actual.Any(x => x.title == "some testing"));
+
+    [Fact]
     public void should_map_second_record() => Assert.True(actual.Any(x => x.title == "other testing"));
 
     static SkinnyTestingDatabaseRecord[] actual;
@@ -57,7 +60,7 @@ namespace Skinny
 
       var query = "SELECT * FROM skinny_testing";
 
-      actual = connection.Query<SkinnyTestingDatabaseRecord>(query);
+      actual = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, string>());
     }
 
     [Fact]
@@ -92,7 +95,7 @@ namespace Skinny
 
       var query = "SELECT * FROM skinny_testing";
 
-      actual = connection.Query<SkinnyTestingDatabaseRecord>(query);
+      actual = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, string>());
     }
 
     [Fact]
@@ -113,6 +116,40 @@ namespace Skinny
     {
       public string title { get; set; }
       public string description { get; set; }
+    }
+  }
+
+  public class when_querying_with_parameters
+  {
+    public when_querying_with_parameters()
+    {
+      var connection = new Connection(Settings.ConnectionString);
+
+      var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
+      connection.Command(dropTableCommand);
+
+      var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
+
+      connection.Command(createTableCommand);
+
+      connection.Command("INSERT INTO skinny_testing (title) VALUES ('some testing')");
+
+      var query = "SELECT * FROM skinny_testing where title = @title";
+
+      var parameters = new Dictionary<string, string>() { { "title", "some testing" } };
+
+      actual = connection.Query<SkinnyTestingDatabaseRecord>(query, parameters);
+    }
+
+
+    [Fact]
+    public void should_map_first_record() => Assert.True(actual.Any(x => x.title == "some testing"));
+
+    static SkinnyTestingDatabaseRecord[] actual;
+
+    class SkinnyTestingDatabaseRecord
+    {
+      public string title;
     }
   }
 }

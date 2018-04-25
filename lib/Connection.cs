@@ -23,12 +23,21 @@ namespace Skinny
       return postgresCommand.ExecuteNonQuery();
     }
 
-    public T[] Query<T>(string query)
+    public T[] Query<T>(string query, IDictionary<string, string> parameters)
     {
       var postgresConnection = OpenPostgresConnection();
 
       var postgresCommand = postgresConnection.CreateCommand();
       postgresCommand.CommandText = query;
+
+      foreach (var parameter in parameters)
+      {
+        var postgresParameter = new NpgsqlParameter();
+        postgresParameter.ParameterName = parameter.Key;
+        postgresParameter.Value = parameter.Value;
+
+        postgresCommand.Parameters.Add(postgresParameter);
+      }
 
       var queryResults = postgresCommand.ExecuteReader();
 
