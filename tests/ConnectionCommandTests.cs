@@ -72,7 +72,7 @@ namespace Skinny
     public void should_return_one() => Assert.Equal(1, actual);
 
     [Fact]
-    public void should_map_to_result() => Assert.True(result.Any(x => x.title == "some testing"));
+    public void should_map_to_result() => Assert.Contains(result, x => x.title == "some testing");
 
     static int actual;
     static SkinnyCommandTesting[] result;
