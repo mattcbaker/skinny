@@ -46,7 +46,7 @@ namespace Skinny
         var column = reader.GetColumnSchema()[0];
         var mapped = Activator.CreateInstance<T>();
 
-        if (TypeHasFieldWithThisName<T>(column.ColumnName))
+        if (TypeHasFieldWithThisName(typeof(T), column.ColumnName))
         {
           var field = mapped.GetType().GetField(column.ColumnName);
           field.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));
@@ -63,12 +63,7 @@ namespace Skinny
       return result.ToArray();
     }
 
-    bool TypeHasFieldWithThisName<T>(string fieldName)
-    {
-      var instance = Activator.CreateInstance<T>();
-
-      return instance.GetType().GetField(fieldName) != null;
-    }
+    bool TypeHasFieldWithThisName(Type type, string fieldName) => type.GetField(fieldName) != null;
 
     NpgsqlConnection OpenPostgresConnection()
     {
