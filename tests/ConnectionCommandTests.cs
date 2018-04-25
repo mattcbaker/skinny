@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Xunit;
+using System.Linq;
 
 namespace Skinny
 {
@@ -9,11 +11,11 @@ namespace Skinny
       var connection = new Connection(Settings.ConnectionString);
 
       var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand);
+      connection.Command(dropTableCommand, new Dictionary<string, string>());
 
       var command = "CREATE TABLE skinny_testing (title varchar(100))";
 
-      actual = connection.Command(command);
+      actual = connection.Command(command, new Dictionary<string, string>());
     }
 
     [Fact]
@@ -29,20 +31,55 @@ namespace Skinny
       var connection = new Connection(Settings.ConnectionString);
 
       var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand);
+      connection.Command(dropTableCommand, new Dictionary<string, string>());
 
       var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
 
-      connection.Command(createTableCommand);
+      connection.Command(createTableCommand, new Dictionary<string, string>());
 
       var insertCommand = "INSERT INTO skinny_testing (title) VALUES ('some testing')";
 
-      actual = connection.Command(insertCommand);
+      actual = connection.Command(insertCommand, new Dictionary<string, string>());
     }
 
     [Fact]
     public void should_return_one() => Assert.Equal(1, actual);
 
     static int actual;
+  }
+
+  public class when_executing_a_command_with_parameters
+  {
+    public when_executing_a_command_with_parameters()
+    {
+      var connection = new Connection(Settings.ConnectionString);
+
+      var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
+      connection.Command(dropTableCommand, new Dictionary<string, string>());
+
+      var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
+
+      connection.Command(createTableCommand, new Dictionary<string, string>());
+
+      var insertCommand = "INSERT INTO skinny_testing (title) VALUES (@title)";
+      var parameters = new Dictionary<string, string>() { { "title", "some testing" } };
+
+      actual = connection.Command(insertCommand, parameters);
+      result = connection.Query<SkinnyCommandTesting>("SELECT * FROM skinny_testing", new Dictionary<string, string>());
+    }
+
+    [Fact]
+    public void should_return_one() => Assert.Equal(1, actual);
+
+    [Fact]
+    public void should_map_to_result() => Assert.True(result.Any(x => x.title == "some testing"));
+
+    static int actual;
+    static SkinnyCommandTesting[] result;
+
+    class SkinnyCommandTesting
+    {
+      public string title;
+    }
   }
 }

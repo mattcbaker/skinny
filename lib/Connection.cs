@@ -13,12 +13,21 @@ namespace Skinny
       this.connectionString = connectionString;
     }
 
-    public int Command(string command)
+    public int Command(string command, Dictionary<string, string> parameters)
     {
       var postgresConnection = OpenPostgresConnection();
 
       var postgresCommand = postgresConnection.CreateCommand();
       postgresCommand.CommandText = command;
+
+      foreach (var parameter in parameters)
+      {
+        var postgresParameter = new NpgsqlParameter();
+        postgresParameter.ParameterName = parameter.Key;
+        postgresParameter.Value = parameter.Value;
+
+        postgresCommand.Parameters.Add(postgresParameter);
+      }
 
       return postgresCommand.ExecuteNonQuery();
     }
