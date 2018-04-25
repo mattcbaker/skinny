@@ -13,7 +13,7 @@ namespace Skinny
       this.connectionString = connectionString;
     }
 
-    public int Command(string command, Dictionary<string, string> parameters)
+    public int Command(string command, Dictionary<string, object> parameters)
     {
       var postgresConnection = OpenPostgresConnection();
 
@@ -32,7 +32,7 @@ namespace Skinny
       return postgresCommand.ExecuteNonQuery();
     }
 
-    public T[] Query<T>(string query, IDictionary<string, string> parameters)
+    public T[] Query<T>(string query, IDictionary<string, object> parameters)
     {
       var postgresConnection = OpenPostgresConnection();
 

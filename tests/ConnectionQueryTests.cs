@@ -11,18 +11,18 @@ namespace Skinny
       var connection = new Connection(Settings.ConnectionString);
 
       var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand, new Dictionary<string, string>());
+      connection.Command(dropTableCommand, new Dictionary<string, object>());
 
       var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
 
-      connection.Command(createTableCommand, new Dictionary<string, string>());
+      connection.Command(createTableCommand, new Dictionary<string, object>());
 
-      connection.Command("INSERT INTO skinny_testing (title) VALUES ('some testing')", new Dictionary<string, string>());
-      connection.Command("INSERT INTO skinny_testing (title) VALUES ('other testing')", new Dictionary<string, string>());
+      connection.Command("INSERT INTO skinny_testing (title) VALUES ('some testing')", new Dictionary<string, object>());
+      connection.Command("INSERT INTO skinny_testing (title) VALUES ('other testing')", new Dictionary<string, object>());
 
       var query = "SELECT * FROM skinny_testing";
 
-      actual = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, string>());
+      actual = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, object>());
     }
 
     [Fact]
@@ -49,18 +49,18 @@ namespace Skinny
       var connection = new Connection(Settings.ConnectionString);
 
       var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand, new Dictionary<string, string>());
+      connection.Command(dropTableCommand, new Dictionary<string, object>());
 
       var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
 
-      connection.Command(createTableCommand, new Dictionary<string, string>());
+      connection.Command(createTableCommand, new Dictionary<string, object>());
 
-      connection.Command("INSERT INTO skinny_testing (title) VALUES ('some testing')", new Dictionary<string, string>());
-      connection.Command("INSERT INTO skinny_testing (title) VALUES ('other testing')", new Dictionary<string, string>());
+      connection.Command("INSERT INTO skinny_testing (title) VALUES ('some testing')", new Dictionary<string, object>());
+      connection.Command("INSERT INTO skinny_testing (title) VALUES ('other testing')", new Dictionary<string, object>());
 
       var query = "SELECT * FROM skinny_testing";
 
-      actual = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, string>());
+      actual = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, object>());
     }
 
     [Fact]
@@ -84,18 +84,18 @@ namespace Skinny
       var connection = new Connection(Settings.ConnectionString);
 
       var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand, new Dictionary<string, string>());
+      connection.Command(dropTableCommand, new Dictionary<string, object>());
 
       var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100), description varchar(100))";
 
-      connection.Command(createTableCommand, new Dictionary<string, string>());
+      connection.Command(createTableCommand, new Dictionary<string, object>());
 
-      connection.Command("INSERT INTO skinny_testing (title, description) VALUES ('some testing', 'some description')", new Dictionary<string, string>());
-      connection.Command("INSERT INTO skinny_testing (title, description) VALUES ('other testing', 'another description')", new Dictionary<string, string>());
+      connection.Command("INSERT INTO skinny_testing (title, description) VALUES ('some testing', 'some description')", new Dictionary<string, object>());
+      connection.Command("INSERT INTO skinny_testing (title, description) VALUES ('other testing', 'another description')", new Dictionary<string, object>());
 
       var query = "SELECT * FROM skinny_testing";
 
-      actual = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, string>());
+      actual = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, object>());
     }
 
     [Fact]
@@ -126,17 +126,17 @@ namespace Skinny
       var connection = new Connection(Settings.ConnectionString);
 
       var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand, new Dictionary<string, string>());
+      connection.Command(dropTableCommand, new Dictionary<string, object>());
 
       var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
 
-      connection.Command(createTableCommand, new Dictionary<string, string>());
+      connection.Command(createTableCommand, new Dictionary<string, object>());
 
-      connection.Command("INSERT INTO skinny_testing (title) VALUES ('some testing')", new Dictionary<string, string>());
+      connection.Command("INSERT INTO skinny_testing (title) VALUES ('some testing')", new Dictionary<string, object>());
 
       var query = "SELECT * FROM skinny_testing where title = @title";
 
-      var parameters = new Dictionary<string, string>() { { "title", "some testing" } };
+      var parameters = new Dictionary<string, object>() { { "title", "some testing" } };
 
       actual = connection.Query<SkinnyTestingDatabaseRecord>(query, parameters);
     }

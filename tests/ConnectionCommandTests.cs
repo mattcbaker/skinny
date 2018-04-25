@@ -11,11 +11,11 @@ namespace Skinny
       var connection = new Connection(Settings.ConnectionString);
 
       var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand, new Dictionary<string, string>());
+      connection.Command(dropTableCommand, new Dictionary<string, object>());
 
       var command = "CREATE TABLE skinny_testing (title varchar(100))";
 
-      actual = connection.Command(command, new Dictionary<string, string>());
+      actual = connection.Command(command, new Dictionary<string, object>());
     }
 
     [Fact]
@@ -31,15 +31,15 @@ namespace Skinny
       var connection = new Connection(Settings.ConnectionString);
 
       var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand, new Dictionary<string, string>());
+      connection.Command(dropTableCommand, new Dictionary<string, object>());
 
       var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
 
-      connection.Command(createTableCommand, new Dictionary<string, string>());
+      connection.Command(createTableCommand, new Dictionary<string, object>());
 
       var insertCommand = "INSERT INTO skinny_testing (title) VALUES ('some testing')";
 
-      actual = connection.Command(insertCommand, new Dictionary<string, string>());
+      actual = connection.Command(insertCommand, new Dictionary<string, object>());
     }
 
     [Fact]
@@ -55,17 +55,17 @@ namespace Skinny
       var connection = new Connection(Settings.ConnectionString);
 
       var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
-      connection.Command(dropTableCommand, new Dictionary<string, string>());
+      connection.Command(dropTableCommand, new Dictionary<string, object>());
 
       var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
 
-      connection.Command(createTableCommand, new Dictionary<string, string>());
+      connection.Command(createTableCommand, new Dictionary<string, object>());
 
       var insertCommand = "INSERT INTO skinny_testing (title) VALUES (@title)";
-      var parameters = new Dictionary<string, string>() { { "title", "some testing" } };
+      var parameters = new Dictionary<string, object>() { { "title", "some testing" } };
 
       actual = connection.Command(insertCommand, parameters);
-      result = connection.Query<SkinnyCommandTesting>("SELECT * FROM skinny_testing", new Dictionary<string, string>());
+      result = connection.Query<SkinnyCommandTesting>("SELECT * FROM skinny_testing", new Dictionary<string, object>());
     }
 
     [Fact]
