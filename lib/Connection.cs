@@ -43,21 +43,23 @@ namespace Skinny
 
       while (reader.Read())
       {
-        var column = reader.GetColumnSchema()[0];
-        var mapped = Activator.CreateInstance<T>();
-
-        if (TypeHasFieldWithThisName(typeof(T), column.ColumnName))
+        foreach (var column in reader.GetColumnSchema())
         {
-          var field = mapped.GetType().GetField(column.ColumnName);
-          field.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));
-        }
-        else
-        {
-          var property = mapped.GetType().GetProperty(column.ColumnName);
-          property.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));          
-        }
+          var mapped = Activator.CreateInstance<T>();
 
-        result.Add(mapped);
+          if (TypeHasFieldWithThisName(typeof(T), column.ColumnName))
+          {
+            var field = mapped.GetType().GetField(column.ColumnName);
+            field.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));
+          }
+          else
+          {
+            var property = mapped.GetType().GetProperty(column.ColumnName);
+            property.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));
+          }
+
+          result.Add(mapped);
+        }
       }
 
       return result.ToArray();
