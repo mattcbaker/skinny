@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Xunit;
 using System.Linq;
+using Npgsql;
 
 namespace Skinny
 {
@@ -65,17 +66,25 @@ namespace Skinny
       var parameters = new Dictionary<string, object>() { { "title", "some testing" } };
 
       actual = connection.Command(insertCommand, parameters);
-      result = connection.Query<SkinnyCommandTesting>("SELECT * FROM skinny_testing", new Dictionary<string, object>());
+
+      writtenToDatabase = TestingUtils.PostgresQuery("SELECT * FROM skinny_testing");
     }
 
     [Fact]
     public void should_return_one() => Assert.Equal(1, actual);
 
     [Fact]
-    public void should_map_to_result() => Assert.Contains(result, x => x.title == "some testing");
+    public void should_write_to_the_database() => Assert.True(writtenToDatabase.HasRows);
+
+    [Fact]
+    public void should_write_expected_record_to_database() {
+      writtenToDatabase.Read();
+      
+      Assert.Equal("some testing", writtenToDatabase.GetString(0));
+    }
 
     static int actual;
-    static SkinnyCommandTesting[] result;
+    static NpgsqlDataReader writtenToDatabase;
 
     class SkinnyCommandTesting
     {

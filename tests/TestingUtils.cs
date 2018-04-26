@@ -16,6 +16,16 @@ namespace Skinny
       postgresCommand.ExecuteNonQuery();
     }
 
+    public static NpgsqlDataReader PostgresQuery(string query)
+    {
+      var postgresConnection = OpenPostgresConnection();
+
+      var postgresCommand = postgresConnection.CreateCommand();
+      postgresCommand.CommandText = query;
+
+      return postgresCommand.ExecuteReader();
+    }
+
     static NpgsqlConnection OpenPostgresConnection()
     {
       var connection = new NpgsqlConnection(Settings.ConnectionString);
