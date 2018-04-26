@@ -77,9 +77,10 @@ namespace Skinny
     public void should_write_to_the_database() => Assert.True(writtenToDatabase.HasRows);
 
     [Fact]
-    public void should_write_expected_record_to_database() {
+    public void should_write_expected_record_to_database()
+    {
       writtenToDatabase.Read();
-      
+
       Assert.Equal("some testing", writtenToDatabase.GetString(0));
     }
 
@@ -89,6 +90,30 @@ namespace Skinny
     class SkinnyCommandTesting
     {
       public string title = string.Empty;
+    }
+  }
+
+  public class when_executing_lots_of_commands
+  {
+    [Fact]
+    public void should_not_exhaust_connection_pool() => TryToExhaustConnectionPool();
+
+    void TryToExhaustConnectionPool()
+    {
+      var connection = new Connection(Settings.ConnectionString);
+
+      var dropTableCommand = "DROP TABLE IF EXISTS skinny_testing";
+      connection.Command(dropTableCommand, new Dictionary<string, object>());
+
+      var createTableCommand = "CREATE TABLE skinny_testing (title varchar(100))";
+
+      connection.Command(createTableCommand, new Dictionary<string, object>());
+
+      for (var i = 0; i < 500; i++)
+      {
+        var insertCommand = $"INSERT INTO skinny_testing (title) VALUES ('some testing{i}')";
+        connection.Command(insertCommand, new Dictionary<string, object>());
+      }
     }
   }
 }

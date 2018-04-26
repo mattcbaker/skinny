@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Npgsql;
 
 namespace Skinny
@@ -7,6 +8,7 @@ namespace Skinny
   public class Connection
   {
     readonly string connectionString;
+    NpgsqlConnection npgsqlConnection;
 
     public Connection(string connectionString)
     {
@@ -74,9 +76,13 @@ namespace Skinny
 
     NpgsqlConnection OpenNpgsqlConnection()
     {
-      var connection = new NpgsqlConnection(connectionString);
-      connection.Open();
-      return connection;
+      if (npgsqlConnection != null && npgsqlConnection.State != ConnectionState.Closed && npgsqlConnection.State != ConnectionState.Broken) return npgsqlConnection;
+
+      var newNpgsqlConnection = new NpgsqlConnection(connectionString);
+      newNpgsqlConnection.Open();
+      npgsqlConnection = newNpgsqlConnection;
+
+      return newNpgsqlConnection;
     }
 
     void AddParametersToNpgsqlCommand(NpgsqlCommand npgsqlCommand, IDictionary<string, object> parameters)
