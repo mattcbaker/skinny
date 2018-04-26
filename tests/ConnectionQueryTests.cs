@@ -130,4 +130,33 @@ namespace Skinny
       public string title = string.Empty;
     }
   }
+
+    public class when_querying_with_more_columns_than_what_is_being_mapped
+  {
+    public when_querying_with_more_columns_than_what_is_being_mapped()
+    {
+
+      TestingUtils.PostgresCommand("DROP TABLE IF EXISTS skinny_testing");
+      TestingUtils.PostgresCommand("CREATE TABLE skinny_testing (title varchar(100), not_being_mapped varchar(200))");
+      TestingUtils.PostgresCommand("INSERT INTO skinny_testing (title) VALUES ('some testing')");
+
+      var connection = new Connection(Settings.ConnectionString);
+
+      var query = "SELECT * FROM skinny_testing where title = @title";
+
+      var parameters = new Dictionary<string, object>() { { "title", "some testing" } };
+
+      actual = connection.Query<SkinnyTestingDatabaseRecord>(query, parameters);
+    }
+
+    [Fact]
+    public void should_map_first_record() => Assert.Contains(actual, x => x.title == "some testing");
+
+    static SkinnyTestingDatabaseRecord[] actual;
+
+    class SkinnyTestingDatabaseRecord
+    {
+      public string title = string.Empty;
+    }
+  }
 }

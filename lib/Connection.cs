@@ -70,7 +70,7 @@ namespace Skinny
             var field = mapped.GetType().GetField(column.ColumnName);
             field.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));
           }
-          else
+          else if(TypeHasPropertyWithThisName(typeof(T), column.ColumnName))
           {
             var property = mapped.GetType().GetProperty(column.ColumnName);
             property.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));
@@ -84,6 +84,7 @@ namespace Skinny
     }
 
     bool TypeHasFieldWithThisName(Type type, string fieldName) => type.GetField(fieldName) != null;
+    bool TypeHasPropertyWithThisName(Type type, string propertyName) => type.GetProperty(propertyName) != null;
 
     NpgsqlConnection OpenPostgresConnection()
     {
