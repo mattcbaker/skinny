@@ -13,42 +13,28 @@ namespace Skinny
       this.connectionString = connectionString;
     }
 
-    public int Command(string command, Dictionary<string, object> parameters)
+    public int Command(string command, IDictionary<string, object> parameters)
     {
-      var postgresConnection = OpenPostgresConnection();
+      var npgsqlConnection = OpenNpgsqlConnection();
 
-      var postgresCommand = postgresConnection.CreateCommand();
-      postgresCommand.CommandText = command;
+      var npgsqlCommand = npgsqlConnection.CreateCommand();
+      npgsqlCommand.CommandText = command;
 
-      foreach (var parameter in parameters)
-      {
-        var postgresParameter = new NpgsqlParameter();
-        postgresParameter.ParameterName = parameter.Key;
-        postgresParameter.Value = parameter.Value;
+      AddParametersToNpgsqlCommand(npgsqlCommand, parameters);
 
-        postgresCommand.Parameters.Add(postgresParameter);
-      }
-
-      return postgresCommand.ExecuteNonQuery();
+      return npgsqlCommand.ExecuteNonQuery();
     }
 
     public T[] Query<T>(string query, IDictionary<string, object> parameters)
     {
-      var postgresConnection = OpenPostgresConnection();
+      var npgsqlConnection = OpenNpgsqlConnection();
 
-      var postgresCommand = postgresConnection.CreateCommand();
-      postgresCommand.CommandText = query;
+      var npgsqlCommand = npgsqlConnection.CreateCommand();
+      npgsqlCommand.CommandText = query;
 
-      foreach (var parameter in parameters)
-      {
-        var postgresParameter = new NpgsqlParameter();
-        postgresParameter.ParameterName = parameter.Key;
-        postgresParameter.Value = parameter.Value;
+      AddParametersToNpgsqlCommand(npgsqlCommand, parameters);
 
-        postgresCommand.Parameters.Add(postgresParameter);
-      }
-
-      var queryResults = postgresCommand.ExecuteReader();
+      var queryResults = npgsqlCommand.ExecuteReader();
 
       return MapQueryResultToType<T>(queryResults);
     }
@@ -70,7 +56,7 @@ namespace Skinny
             var field = mapped.GetType().GetField(column.ColumnName);
             field.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));
           }
-          else if(TypeHasPropertyWithThisName(typeof(T), column.ColumnName))
+          else if (TypeHasPropertyWithThisName(typeof(T), column.ColumnName))
           {
             var property = mapped.GetType().GetProperty(column.ColumnName);
             property.SetValue(mapped, reader.GetValue((int)column.ColumnOrdinal));
@@ -86,11 +72,23 @@ namespace Skinny
     bool TypeHasFieldWithThisName(Type type, string fieldName) => type.GetField(fieldName) != null;
     bool TypeHasPropertyWithThisName(Type type, string propertyName) => type.GetProperty(propertyName) != null;
 
-    NpgsqlConnection OpenPostgresConnection()
+    NpgsqlConnection OpenNpgsqlConnection()
     {
       var connection = new NpgsqlConnection(connectionString);
       connection.Open();
       return connection;
+    }
+
+    void AddParametersToNpgsqlCommand(NpgsqlCommand npgsqlCommand, IDictionary<string, object> parameters)
+    {
+      foreach (var parameter in parameters)
+      {
+        var npgsqlParameter = new NpgsqlParameter();
+        npgsqlParameter.ParameterName = parameter.Key;
+        npgsqlParameter.Value = parameter.Value;
+
+        npgsqlCommand.Parameters.Add(npgsqlParameter);
+      }
     }
   }
 }
