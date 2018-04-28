@@ -3,6 +3,9 @@ Skinny is a fast, lightweight Postgres ORM written on .Net Core.
 
 The only [dependency](lib/skinny.csproj) that Skinny has taken is the [npgsql driver](http://www.npgsql.org/). 
 
+## Installing
+dotnet add package Skinny
+
 ## Executing a command
 ```
 connection.Command("CREATE TABLE skinny_testing (title varchar(100))", new Dictionary<string, object>());
@@ -40,3 +43,6 @@ The query api accepts a query to be ran and a dictionary of parameters, it will 
 `int Command(string command, IDictionary<string, object> parameters)`
 
 The command api accepts a command to be ran and a dictionary of parameters, it will return a `int` indicating the number of affected rows. The return will be `-1` if no rows are affected.
+
+**License**
+Skinny is licensed under the Apache 2 license. The license [can be viewed here](LICENSE).
