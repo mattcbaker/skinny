@@ -3,14 +3,6 @@ Skinny is a fast, lightweight Postgres ORM written on .Net Core.
 
 The only [dependency](lib/skinny.csproj) that Skinny has taken is the [npgsql driver](http://www.npgsql.org/).
 
-You might like Skinny if:
-* You are looking for a Postgres api with a small footprint.
-* You prefer to write SQL.
-
-You might not like Skinny if:
-* You prefer to not write SQL.
-* You like to create smart mappings between your model and your database (other than just by name).
-
 ## Installing
 `dotnet add package Skinny`
 
@@ -30,6 +22,15 @@ var parameters = new Dictionary<string, object>() { { "name", "jane" } };
 
 connection.Query<Person>("SELECT * FROM people where name = @name", parameters);
 ```
+
+## Why would I use this?
+You might like Skinny if:
+* You are looking for a Postgres api with a small footprint.
+* You prefer to write SQL.
+
+You might not like Skinny if:
+* You prefer to not write SQL.
+* You like to create smart mappings between your model and your database (other than just by name).
 
 ## Skinny Api
 The Skinny Api exists in [Connection.cs](lib/Connection.cs).
