@@ -19,3 +19,24 @@ var parameters = new Dictionary<string, object>() { { "name", "jane" } };
 
 connection.Query<Person>("SELECT * FROM people where name = @name", parameters);
 ```
+
+## Skinny Api
+The Skinny Api exists in [Connection.cs](lib/Connection.cs).
+
+**Constructor**
+
+The constructor accepts a Postgres connection string.
+
+`Connection(string connectionString)`
+
+**Query**
+
+The query api accepts a query to be ran and a dictionary of parameters, it will return a list of mapped results. The mapping is based on the column names in the result of the query. Skinny will attempt to map each column name to a property or field _of the same name_ on the result type.
+
+`T[] Query<T>(string query, IDictionary<string, object> parameters)`
+
+**Command**
+
+The command api accepts a command to be ran and a dictionary of parameters, it will return a `int` indicating the number of affected rows. The return will be `-1` if no rows are affected.
+
+`int Command(string command, IDictionary<string, object> parameters)`
