@@ -44,5 +44,11 @@ The query api accepts a query to be ran and a dictionary of parameters, and it w
 
 The command api accepts a command to be ran and a dictionary of parameters, and it will return an `int` indicating the number of affected rows. The return will be `-1` if no rows are affected.
 
+## Performance
+Skinny's performance characteristics can be seen in the [performance test file](tests/PerformanceTests.cs).
+
+## Running the tests
+Copy the `.env.example` to a file named `.env` in `tests/`. Edit the file to include your settings values and then run the tests with `dotnet test`.
+
 ## License
 Skinny is licensed under the Apache 2 license. The license [can be viewed here](LICENSE).
