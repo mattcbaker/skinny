@@ -36,13 +36,13 @@ The constructor accepts a Postgres connection string.
 
 `T[] Query<T>(string query, IDictionary<string, object> parameters)`
 
-The query api accepts a query to be ran and a dictionary of parameters, it will return a list of mapped results. The mapping is based on the column names in the result of the query. Skinny will attempt to map each column name to a property or field _of the same name_ on the result type.
+The query api accepts a query to be ran and a dictionary of parameters, and it will return a list of mapped results. The mapping is based on the column names in the result of the query. Skinny will attempt to map each column name to a property or field _of the same name_ on the result type.
 
 **Command**
 
 `int Command(string command, IDictionary<string, object> parameters)`
 
-The command api accepts a command to be ran and a dictionary of parameters, it will return a `int` indicating the number of affected rows. The return will be `-1` if no rows are affected.
+The command api accepts a command to be ran and a dictionary of parameters, and it will return an `int` indicating the number of affected rows. The return will be `-1` if no rows are affected.
 
 ## License
 Skinny is licensed under the Apache 2 license. The license [can be viewed here](LICENSE).
