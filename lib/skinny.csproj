@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>1.0.0</Version>
+    <PackageId>Skinny</PackageId>
+    <Authors>mattcbaker</Authors>
+    <PackageProjectUrl>https://github.com/mattcbaker/skinny</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/mattcbaker/skinny/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/mattcbaker/skinny</RepositoryUrl>
+    <Description>A lightweight Postgres ORM for .Net Core.</Description>
+    <PackageTags>postgres;core;dotnet;simple;orm</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
