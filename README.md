@@ -1,10 +1,15 @@
 # Skinny
 Skinny is a fast, lightweight Postgres ORM written on .Net Core.
 
-The only [dependency](lib/skinny.csproj) that Skinny has taken is the [npgsql driver](http://www.npgsql.org/). 
+The only [dependency](lib/skinny.csproj) that Skinny has taken is the [npgsql driver](http://www.npgsql.org/).
 
 ## Installing
 `dotnet add package Skinny`
+
+## Creating an instance
+```
+var connection = new Connection("host=localhost; database=postgres; user id=postgres; password=postgres;");
+```
 
 ## Executing a command
 ```
@@ -23,6 +28,15 @@ var parameters = new Dictionary<string, object>() { { "name", "jane" } };
 connection.Query<Person>("SELECT * FROM people where name = @name", parameters);
 ```
 
+## Why would I use this?
+You might like Skinny if:
+* You are looking for a Postgres api with a small footprint.
+* You prefer to write SQL.
+
+You might not like Skinny if:
+* You prefer to not write SQL.
+* You like to configure mappings between your model and your database (other than just by name).
+
 ## Skinny Api
 The Skinny Api exists in [Connection.cs](lib/Connection.cs).
 
@@ -36,7 +50,7 @@ The constructor accepts a Postgres connection string.
 
 `T[] Query<T>(string query, IDictionary<string, object> parameters)`
 
-The query api accepts a query to be ran and a dictionary of parameters, and it will return a list of mapped results. The mapping is based on the column names in the result of the query. Skinny will attempt to map each column name to a property or field _of the same name_ on the result type.
+The query api accepts a query to be ran and a dictionary of parameters, and it will return an array of mapped results. The mapping is based on the column names in the result of the query. Skinny will attempt to map each column name to a property or field _of the same name_ on the result type.
 
 **Command**
 
