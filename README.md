@@ -30,7 +30,7 @@ You might like Skinny if:
 
 You might not like Skinny if:
 * You prefer to not write SQL.
-* You like to create smart mappings between your model and your database (other than just by name).
+* You like to configure mappings between your model and your database (other than just by name).
 
 ## Skinny Api
 The Skinny Api exists in [Connection.cs](lib/Connection.cs).
