@@ -44,5 +44,5 @@ The query api accepts a query to be ran and a dictionary of parameters, it will 
 
 The command api accepts a command to be ran and a dictionary of parameters, it will return a `int` indicating the number of affected rows. The return will be `-1` if no rows are affected.
 
-**License**
+## License
 Skinny is licensed under the Apache 2 license. The license [can be viewed here](LICENSE).
