@@ -6,6 +6,11 @@ The only [dependency](lib/skinny.csproj) that Skinny has taken is the [npgsql dr
 ## Installing
 `dotnet add package Skinny`
 
+## Creating an instance
+```
+var connection = new Connection("host=localhost; database=postgres; user id=postgres; password=postgres;");
+```
+
 ## Executing a command
 ```
 connection.Command("CREATE TABLE skinny_testing (title varchar(100))", new Dictionary<string, object>());
