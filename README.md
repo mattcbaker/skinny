@@ -30,7 +30,7 @@ connection.Query<Person>("SELECT * FROM people where name = @name", parameters);
 
 ## Why would I use this?
 You might like Skinny if:
-* You are looking for a Postgres api with a small footprint.
+* You are looking for a Postgres Api with a small footprint.
 * You prefer to write SQL.
 
 You might not like Skinny if:
