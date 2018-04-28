@@ -25,21 +25,19 @@ namespace Skinny
 
       var query = "SELECT * FROM skinny_testing";
 
-      var stopwatch = new Stopwatch();
+      stopwatch = new Stopwatch();
       stopwatch.Start();
 
       read = connection.Query<SkinnyTestingDatabaseRecord>(query, new Dictionary<string, object>());
 
       stopwatch.Stop();
-
-      mappingTimeInMilliseconds = stopwatch.ElapsedMilliseconds;
     }
 
     [Fact]
-    public void should_complete_in_under_150_milliseconds() => Assert.InRange(mappingTimeInMilliseconds, 1, 150);
+    public void should_complete_in_under_150_milliseconds() => Assert.InRange(stopwatch.ElapsedMilliseconds, 1, 150);
 
     static SkinnyTestingDatabaseRecord[] read;
-    static long mappingTimeInMilliseconds = 0;
+    static Stopwatch stopwatch;
 
     class SkinnyTestingDatabaseRecord
     {
