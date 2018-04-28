@@ -1,5 +1,5 @@
 # Skinny
-Skinny is a lightweight Postgres ORM written on .Net Core.
+Skinny is a fast, lightweight Postgres ORM written on .Net Core.
 
 The only [dependency](lib/skinny.csproj) that Skinny has taken is the [npgsql driver](http://www.npgsql.org/). 
 
