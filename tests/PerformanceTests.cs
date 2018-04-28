@@ -36,7 +36,7 @@ namespace Skinny
     }
 
     [Fact]
-    public void should_complete_in_under_180_milliseconds() => Assert.InRange(mappingTimeInMilliseconds, 1, 179);
+    public void should_complete_in_under_150_milliseconds() => Assert.InRange(mappingTimeInMilliseconds, 1, 150);
 
     static SkinnyTestingDatabaseRecord[] read;
     static long mappingTimeInMilliseconds = 0;
